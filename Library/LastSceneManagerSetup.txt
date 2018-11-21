@@ -1,0 +1,4 @@
+sceneSetups:
+- path: Assets/GameScene/DesignPattern.unity
+  isLoaded: 1
+  isActive: 1

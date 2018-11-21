@@ -52,13 +52,6 @@
     <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
     <UnityVersion>2018.2.0f2</UnityVersion>
   </PropertyGroup>
-  <PropertyGroup>
-    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <UnityProjectGenerator>Unity/VSTU</UnityProjectGenerator>
-    <UnityProjectType>Editor:5</UnityProjectType>
-    <UnityBuildTarget>StandaloneWindows64:19</UnityBuildTarget>
-    <UnityVersion>2018.2.0f2</UnityVersion>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
       <HintPath>E:\Unity\Editor\Data\Managed/UnityEngine/UnityEngine.dll</HintPath>
@@ -461,6 +454,9 @@
     <Reference Include="PlayMaker">
       <HintPath>E:/GitProgram/DMZL/Assets/Plugins/PlayMaker/PlayMaker.dll</HintPath>
     </Reference>
+    <Reference Include="SyntaxTree.Mono.Cecil">
+      <HintPath>E:/GitProgram/DMZL/Assets/Tools/UnityVS/Editor/SyntaxTree.Mono.Cecil.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEditor.Advertisements">
       <HintPath>C:/Users/Administrator/AppData/Local/Unity/cache/packages/packages.unity.com/com.unity.ads@2.0.8/Editor/UnityEditor.Advertisements.dll</HintPath>
     </Reference>
@@ -478,15 +474,6 @@
     </Reference>
     <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
       <HintPath>C:/Program Files (x86)/Microsoft Visual Studio Tools for Unity/15.0/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>E:/GitProgram/DMZL/Assets/Tools/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Messaging">
-      <HintPath>E:/GitProgram/DMZL/Assets/Tools/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.Mono.Cecil">
-      <HintPath>E:/GitProgram/DMZL/Assets/Tools/UnityVS/Editor/SyntaxTree.Mono.Cecil.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib">
       <HintPath>E:/Unity/Editor/Data/MonoBleedingEdge/lib/mono/2.0-api/mscorlib.dll</HintPath>
@@ -527,7 +514,6 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
