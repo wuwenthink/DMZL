@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Building
+  - Ground
+  - UIROOT
+  - ClickArea
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Ground
+  - World
+  - Grid
+  - Front
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Ground
+    uniqueID: 958255709
+    locked: 0
+  - name: Grid
+    uniqueID: 444238965
+    locked: 0
+  - name: Area
+    uniqueID: 2464905597
+    locked: 0
+  - name: Building
+    uniqueID: 1161701831
+    locked: 0
+  - name: Role
+    uniqueID: 362165923
+    locked: 0
+  - name: UI
+    uniqueID: 3703904239
+    locked: 0

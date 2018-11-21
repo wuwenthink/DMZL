@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a64e5b0e436d4bed9780211ae245f7b, type: 3}
+  m_Name: Role_Nomal_zheng_Data
+  m_EditorClassIdentifier: 
+  dataName: Role_Nomal_zheng
+  dragonBonesJSON: {fileID: 4900000, guid: d2470911d221c0d4a94141d3de0773fb, type: 3}
+  textureAtlas:
+  - textureAtlasJSON: {fileID: 4900000, guid: d66c508c7df348b4fba229f9cbd0282d, type: 3}
+    texture: {fileID: 2800000, guid: d3fb3ffb7e321d747a3c60c60e0eb6ba, type: 3}
+    material: {fileID: 2100000, guid: c449d56d9e1431a4e9a5fa54be78f4b1, type: 2}
+    uiMaterial: {fileID: 2100000, guid: 8a425f994fec42c42a60848a103deed0, type: 2}
