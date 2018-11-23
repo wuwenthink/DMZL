@@ -914,7 +914,7 @@ public class BuildModeUI : MonoBehaviour
                                     tempGrids.Remove(item);
                                 }
                                 //如果点击到最上面一行，则删除下方所有格子和本行点击位置的右侧所有格子。
-                                else if (itemPosY == boxPosY && itemPosY == maxY && itemPosX > boxPosX)
+                                else if ((itemPosY == boxPosY) && (itemPosY == maxY) && (itemPosX > boxPosX))
                                 {
                                     newPart.Dic_MapBox.Remove(item);
                                     Dic_AllGrid[item] = -1;
