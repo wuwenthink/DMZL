@@ -15,7 +15,9 @@ public static class Data_Static
 {
     //存档路径
     public static string save_pathMain = Application.dataPath + "/SaveData/";
-    public static string save_pathScene = Application.dataPath + "/SaveData/SceneData/";
+    public static string save_pathScene_Main = Application.dataPath + "/SaveData/SceneMain/";
+    public static string save_pathScene_Data = Application.dataPath + "/SaveData/SceneData/";
+    public static string save_pathScene_Grid = Application.dataPath + "/SaveData/SceneGrid/";
     public static string save_DataName = "/SaveData.json";
 
     //各UI界面prefab路径
@@ -117,7 +119,6 @@ public static class Data_Static
     public static string MapPic_Area = "Picture/Map_Area/";
     public static string MapPic_SceneModel = "Picture/Map_City/";
     public static string MapPic_PartModel = "Picture/Map_Part/";
-    public static string MapPic_Terrain = "Picture/Terrain/";
     public static string MapPic_Nomal = "Picture/Map_Nomal/";
     public static string MapData_Main = "Json/MapData/";
 

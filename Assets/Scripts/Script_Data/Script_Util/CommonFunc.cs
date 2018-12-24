@@ -10,9 +10,11 @@
 // ======================================================================================
 
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Tiled2Unity;
+using System.Text;
 
 public class CommonFunc : MonoBehaviour
 {
@@ -284,6 +286,7 @@ public class CommonFunc : MonoBehaviour
         return ItemTip;
     }
 
+
     /// <summary>
     /// 设置界面UIPanel深度
     /// </summary>
@@ -339,6 +342,67 @@ public class CommonFunc : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// 计算最大值
+    /// </summary>
+    /// <param name="wo"></param>
+    /// <returns></returns>
+    public float maxValue(List<float> wo)
+    {
+        float max = wo[0];
+        for (int x = 0; x < wo.Count; x++)
+        {
+            if (wo[x] > max)
+            {
+                max = wo[x];
+            }
+        }
+        
+        return max;
+    }
+    public int maxValue(List<int> wo)
+    {
+        int max = wo[0];
+        for (int x = 0; x < wo.Count; x++)
+        {
+            if (wo[x] > max)
+            {
+                max = wo[x];
+            }
+        }
+
+        return max;
+    }
+    /// <summary>
+    /// 计算最小值
+    /// </summary>
+    /// <param name="wo"></param>
+    /// <returns></returns>
+    public float minValue(List<float> wo)
+    {
+        float min = wo[0];
+        for (int x = 0; x < wo.Count; x++)
+        {
+            if (wo[x] < min)
+            {
+                min = wo[x]; 
+            }
+        }
+        return min;
+    }
+    public int minValue(List<int> wo)
+    {
+        int min = wo[0];
+        for (int x = 0; x < wo.Count; x++)
+        {
+            if (wo[x] < min)
+            {
+                min = wo[x];
+            }
+        }
+        return min;
+    }
     /// <summary>
     /// 判断UILable的文字颜色
     /// </summary>

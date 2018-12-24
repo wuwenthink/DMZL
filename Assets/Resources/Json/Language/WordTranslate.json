@@ -2096,6 +2096,9 @@
    "Part_fanrong_5" : { 
       "chinese" : "繁华"
    }, 
+   "BuildingMode_0" : { 
+      "chinese" : "点击鼠标左键创建模块，点击鼠标右键返回查看模式。"
+   }, 
    "BuildingMode_1" : { 
       "chinese" : "点击鼠标左键：根据点击位置创建选中类型的区域。"
    }, 
@@ -2106,7 +2109,7 @@
       "chinese" : "状态错误：区域大小不足，最小格子数为："
    }, 
    "BuildingMode_4" : { 
-      "chinese" : "状态错误：已选区域范围内有其他障碍。"
+      "chinese" : "创建错误：已选区域范围内有其他障碍，请重新创建区域。"
    }, 
    "BuildingMode_5" : { 
       "chinese" : "当前状态：正在查看场景……"
@@ -2146,5 +2149,65 @@
    }, 
    "BuildingMode_17" : { 
       "chinese" : "保存成功，但有{0}个区域中没有建筑。"
+   }, 
+   "BuildingMode_18" : { 
+      "chinese" : "当前操作：读取场景信息"
+   }, 
+   "BuildingMode_19" : { 
+      "chinese" : "请重新命名！"
+   }, 
+   "BuildingMode_20" : { 
+      "chinese" : "输入有误，请重新输入！"
+   }, 
+   "BuildingMode_21" : { 
+      "chinese" : "输入提示"
+   }, 
+   "BuildingMode_22" : { 
+      "chinese" : "点击添加建筑+"
+   }, 
+   "BuildingMode_23" : { 
+      "chinese" : "已解锁"
+   }, 
+   "BuildingMode_24" : { 
+      "chinese" : "未解锁"
+   }, 
+   "BuildingMode_25" : { 
+      "chinese" : "移除成功！"
+   }, 
+   "BuildingMode_26" : { 
+      "chinese" : "添加建筑"
+   }, 
+   "BuildingMode_27" : { 
+      "chinese" : "添加成功！"
+   }, 
+   "BuildingMode_28" : { 
+      "chinese" : "添加失败，建筑已满！"
+   }, 
+   "BuildingMode_29" : { 
+      "chinese" : "移除建筑"
+   }, 
+   "BuildingMode_30" : { 
+      "chinese" : "区域创建"
+   }, 
+   "BuildingMode_31" : { 
+      "chinese" : "保存失败：区域太小，最小格子数量为："
+   }, 
+   "BuildingMode_32" : { 
+      "chinese" : "保存失败：区域太大，最大格子数量为："
+   }, 
+   "BuildingMode_33" : { 
+      "chinese" : "保存失败：数据错误，区域格子数量与选中范围不匹配。已删除模块，需要重新创建。"
+   }, 
+   "BuildingMode_34" : { 
+      "chinese" : "删除模块"
+   }, 
+   "BuildingMode_35" : { 
+      "chinese" : "取消操作"
+   }, 
+   "BuildingMode_36" : { 
+      "chinese" : "未发现任何保存过的场景。"
+   }, 
+   "BuildingMode_37" : { 
+      "chinese" : "查看已有场景"
    }
 }

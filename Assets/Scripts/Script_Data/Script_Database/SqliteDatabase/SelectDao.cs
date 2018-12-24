@@ -572,7 +572,7 @@ public class SelectDao
     }
 
     /// <summary>
-    /// 根据建筑的ID查询对应行当的信息
+    /// 根据建筑模板的ID查询对应建筑模板的信息
     /// </summary>
     /// <param name="_id"></param>
     /// <returns></returns>
@@ -587,13 +587,28 @@ public class SelectDao
         return building_Model;
     }
 
-
     /// <summary>
-    /// 根据模块的ID查询对应场景模块的信息
+    /// 按建筑模板的类型查询所有建筑模板
     /// </summary>
-    /// <param name="_id"></param>
     /// <returns></returns>
-    public Map_PartModel SelectMap_PartModel(int _id)
+    public List<Building_Model> SelectBuildingModelByType(int _buildingType)
+    {
+        List<Building_Model> list = new List<Building_Model>();
+        reader = dbService_game.ExecuteReader("SELECT * FROM Building_Model WHERE buildingType=" + _buildingType + ";");
+        while (reader.Read())
+        {
+            var By = new Building_Model(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetString(3), reader.GetInt32(4), reader.GetInt32(5), reader.GetInt32(6), reader.GetInt32(7), reader.GetString(8), reader.GetString(9));
+            list.Add(By);
+        }
+        return list;
+    }
+
+        /// <summary>
+        /// 根据模块的ID查询对应场景模块的信息
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <returns></returns>
+        public Map_PartModel SelectMap_PartModel(int _id)
     {
         Map_PartModel go = null;
         reader = dbService_game.ExecuteReader("SELECT * FROM Map_PartModel WHERE id=" + _id + ";");
@@ -631,7 +646,7 @@ public class SelectDao
         reader = dbService_game.ExecuteReader("SELECT * FROM Map_Terrain WHERE id=" + _id + ";");
         while (reader.Read())
         {
-            go = new Map_Terrain(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4));
+            go = new Map_Terrain(reader.GetInt32(0), reader.GetString(1), reader.GetInt32(2), reader.GetInt32(3), reader.GetString(4), reader.GetString(5));
         }
         return go;
     }

@@ -21,22 +21,12 @@ public class SystemTipsUI : MonoBehaviour
     public UIText Label_Agree;
     public UIText Label_Cancel;
 
-    public bool isYes;
     void Start ()
     {
         Sprite_Back = GameObject.Find ("Sprite_Back");
 
         UIEventListener.Get(Sprite_Back).onClick = back;
         UIEventListener.Get(Button_Cancel).onClick = back;
-    }
-
-    /// <summary>
-    /// 通过消息传递判断按钮功能
-    /// </summary>
-    public void ClickControl ()
-    {
-        UIEventListener.Get(Button_Agree).onClick = Yes;
-        UIEventListener.Get(Button_Cancel).onClick = No;
     }
 
     void back (GameObject btn)
@@ -51,22 +41,15 @@ public class SystemTipsUI : MonoBehaviour
     /// <param name="des">内容</param>
     /// <param name="yes">确定按钮</param>
     /// <param name="no">取消按钮</param>
-    public void SetTipDesc (string des,string yes,string no)
+    public GameObject[] SetTipDesc (string des,string yes,string no)
     {
         Label_TipsDesc.SetText(false, des);
         Label_Agree.SetText(false, yes);
         Label_Cancel.SetText(false, no);
-    }
-
-    void Yes(GameObject btn)
-    {
-        isYes = true;
-        this.gameObject.SetActive(false);
-    }
-    void No(GameObject btn)
-    {
-        isYes = false;
-        this.gameObject.SetActive(false);
+        GameObject[] games = new GameObject[2];
+        games[0] = Button_Agree;
+        games[1] = Button_Cancel;
+        return games;
     }
 
 }

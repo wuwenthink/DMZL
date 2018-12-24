@@ -31,9 +31,9 @@ public class OrganizeAdminUI : MonoBehaviour
     public UIText Label_Recruit;
 
     private string [] buttonText;
-    private List<ButtonTipsUI.ButtonText> buttonPost;
-    private List<ButtonTipsUI.ButtonText> awardButton;
-    private List<ButtonTipsUI.ButtonText> punishButton;
+    private List<ButtonText> buttonPost;
+    private List<ButtonText> awardButton;
+    private List<ButtonText> punishButton;
     private string [] fireText;
     private int _selectRoleId; // 当前选中的人物ID
     private bool isPower; // 是否拥有任命权（即店主或掌柜）
@@ -316,7 +316,7 @@ public class OrganizeAdminUI : MonoBehaviour
     }
 
     // 显示按钮组
-    private void ShowButtonTips (ButtonTipsUI.ButtonText [] _arr)
+    private void ShowButtonTips (ButtonText [] _arr)
     {
         var buttonTips = CommonFunc.GetInstance.UI_Instantiate (Data_Static.UIpath_ButtonTips, transform, Vector3.zero, Vector3.one);
         buttonTips.GetComponent<ButtonTipsUI> ().SetAll (true, _arr);

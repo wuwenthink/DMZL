@@ -202,7 +202,7 @@ public class BagUI : MonoBehaviour
         EventDelegate.Add (Input_InputGetNum.onChange, input_num);
         UIEventListener.Get (Button_Add).onClick = add_num;
         UIEventListener.Get (Button_Reduce).onClick = reduce_num;
-
+        Button_Throw.name = id.ToString();
         UIEventListener.Get(Button_Throw).onClick = item_Throw;
         UIEventListener.Get(Button_Use).onClick = item_Use;
         // 设置使用、丢弃按钮
@@ -340,37 +340,35 @@ public class BagUI : MonoBehaviour
         systemTips.GetComponent<SystemTipsUI> ().SetTipDesc (
             LanguageMgr.GetInstance.GetText("Bag_8") + Label_ItemName.text + " X " + num, 
             LanguageMgr.GetInstance.GetText("Tips_5"), LanguageMgr.GetInstance.GetText("Tips_6"));
-        systemTips.GetComponent<SystemTipsUI>().ClickControl();
+        GameObject[] gameObjects = new GameObject[2];
+        gameObjects[0].name = btn.name;
+        UIEventListener.Get(gameObjects[0]).onClick = systemYes;
+        UIEventListener.Get(gameObjects[1]).onClick = systemNo;
     }
-
-    /// <summary>
-    /// 丢弃时点击确定的方法
-    /// </summary>
-    /// <param name="btn"></param>
-    private void ReceiveSystemTips(bool isYes)
+    void systemYes(GameObject btn)
     {
-        int id = int.Parse(chooseGO.name.Split('_')[0]);
-        if (isYes)
-        {           
-            // 获取丢弃和拥有数量
-            int value = int.Parse(Input_InputGetNum.value);
-            int have = int.Parse(Label_ItemNum.text);
+        // 隐藏提示窗口
+        systemTips.SetActive(false);
+        // 获取丢弃和拥有数量
+        int value = int.Parse(Input_InputGetNum.value);
+        int have = int.Parse(Label_ItemNum.text);
+        int id = int.Parse(btn.name);
+        // 丢弃
+        bag.LoseItem(chooseGO.name, value);
 
-            // 丢弃
-            bag.LoseItem(chooseGO.name, value);
-
-            // 修改背包面板
-            if (value >= have)
-                PoolInstance.Instance.Despawn(chooseGO.transform);
-            else
-            {
-                Label_ItemNum.text = (have - value).ToString();
-                chooseGO.GetComponent<Botton_ItemEXUI>().SetItem(id, have - value);
-            }
-
-            // 隐藏提示窗口
-            systemTips.SetActive(false);
+        // 修改背包面板
+        if (value >= have)
+            PoolInstance.Instance.Despawn(chooseGO.transform);
+        else
+        {
+            Label_ItemNum.text = (have - value).ToString();
+            chooseGO.GetComponent<Botton_ItemEXUI>().SetItem(id, have - value);
         }
+    }
+    void systemNo(GameObject btn)
+    {
+        // 隐藏提示窗口
+        systemTips.SetActive(false);
     }
 
     private void ClickControl ()

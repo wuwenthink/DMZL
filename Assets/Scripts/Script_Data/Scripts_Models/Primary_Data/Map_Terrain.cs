@@ -28,12 +28,18 @@ public class Map_Terrain {
     /// </summary>
     public string effect { get; private set; }
 
-    public Map_Terrain(int _id, string _name, int _type, int _drag, string _effect)
+    /// <summary>
+    /// 地形图标
+    /// </summary>
+    public string icon { get; private set; }
+
+    public Map_Terrain(int _id, string _name, int _type, int _drag, string _effect, string _icon)
     {
         id = _id;
         name = _name;
         type = _type;
         drag = _drag;
         effect = _effect;
+        icon = _icon;
     }
 }

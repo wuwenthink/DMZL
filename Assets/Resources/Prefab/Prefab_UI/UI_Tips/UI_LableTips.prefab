@@ -370,7 +370,7 @@ MonoBehaviour:
   anchorOffset: 0
   softBorderPadding: 1
   renderQueue: 0
-  startingRenderQueue: 3012
+  startingRenderQueue: 3000
   mClipTexture: {fileID: 0}
   mAlpha: 1
   mClipping: 0
@@ -477,7 +477,7 @@ MonoBehaviour:
     relative: 1
     absolute: 0
   updateAnchors: 1
-  mColor: {r: 1, g: 1, b: 1, a: 0.003921569}
+  mColor: {r: 1, g: 1, b: 1, a: 0.35686275}
   mPivot: 4
   mWidth: 3000
   mHeight: 3000
@@ -722,6 +722,7 @@ MonoBehaviour:
   target: {fileID: 0}
   worldCamera: {fileID: 0}
   guiCamera: {fileID: 0}
+  isTure: 0
 --- !u!114 &114777975110287486
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -30,7 +30,7 @@ public class LableTipsUI : MonoBehaviour
     void ClickControl ()
     {
         UIEventListener.Get (Sprite_Back).onClick = back;
-        GetComponent<UIFollow>().enabled = false;
+        GetComponent<UIFollow>().isTure = false;
     }
 
     void back (GameObject btn)
@@ -53,7 +53,7 @@ public class LableTipsUI : MonoBehaviour
         }
         else
         {
-            GetComponent<UIFollow>().enabled = true;
+            GetComponent<UIFollow>().isTure = true;
             //offset = new Vector3 (0.02f, 0.003f, 0);
             Sprite_Back.SetActive (false);
             isHover = true;

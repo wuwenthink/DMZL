@@ -10,6 +10,7 @@
 // ======================================================================================
 
 using UnityEngine;
+using System.Collections.Generic;
 
 public class ButtonTipsUI : MonoBehaviour
 {
@@ -20,16 +21,18 @@ public class ButtonTipsUI : MonoBehaviour
     public GameObject Sprite_Black;
 
     private Transform UI_Root;
-    /// <summary>
-    /// 按钮编号
-    /// </summary>
-    public int ButtonIndex;
+
+    public List<GameObject> buttonGroup;
+
+    private void Awake()
+    {
+        buttonGroup = new List<GameObject>();
+    }
 
     private void Start ()
     {
         UI_Root = FindObjectOfType<UIRoot> ().transform;
         CommonFunc.GetInstance.SetUIPanel (gameObject);
-        
     }
 
     /// <summary>
@@ -37,9 +40,10 @@ public class ButtonTipsUI : MonoBehaviour
     /// </summary>
     /// <param name="isClick">是否允许点击空白关闭</param>
     /// <param name="buttons">每个按钮要显示的文字</param>
-    public void SetAll (bool isClick ,params string [] buttons)
+    public List<GameObject> SetAll (bool isClick ,params string [] buttons)
     {
         NGUITools.DestroyChildren(GameObject_ButtonPos);
+        buttonGroup.Clear();
         ButtonEX.gameObject.SetActive(true);
         if (isClick)
         {
@@ -59,9 +63,12 @@ public class ButtonTipsUI : MonoBehaviour
             buttonObj.GetComponentInChildren<UIText> ().SetText (false, str);
             UIEventListener.Get (buttonObj.gameObject).onClick = ClickButton;
             index++;
+            buttonGroup.Add(buttonObj.gameObject);
         }
         GameObject_ButtonPos.GetComponent<UIGrid>().enabled = true;
         ButtonEX.gameObject.SetActive (false);
+
+        return buttonGroup;
     }
 
     /// <summary>
@@ -69,9 +76,10 @@ public class ButtonTipsUI : MonoBehaviour
     /// </summary>
     /// <param name="isClick">是否允许点击空白关闭</param>
     /// <param name="buttons">每个按钮要显示的文字</param>
-    public void SetAll (bool isClick, params ButtonText [] buttons)
+    public List<GameObject> SetAll (bool isClick, params ButtonText [] buttons)
     {
         NGUITools.DestroyChildren(GameObject_ButtonPos);
+        buttonGroup.Clear();
         ButtonEX.gameObject.SetActive(true);
         if (isClick)
         {
@@ -92,9 +100,12 @@ public class ButtonTipsUI : MonoBehaviour
             buttonObj.name = (btn.Id).ToString ();
             buttonObj.GetComponentInChildren<UIText> ().SetText (false, btn.Text);
             UIEventListener.Get (buttonObj.gameObject).onClick = ClickButton;
+            buttonGroup.Add(buttonObj.gameObject);
         }
         GameObject_ButtonPos.GetComponent<UIGrid>().enabled = true;
         ButtonEX.gameObject.SetActive (false);
+
+        return buttonGroup;
     }
 
     // 清空全部按钮
@@ -108,11 +119,8 @@ public class ButtonTipsUI : MonoBehaviour
     }
 
     // 监听按钮并反馈给调用ButtonTips的UI
-    // 返回值是按钮的序号（默认0开始；或ButtonText的ID）
     private void ClickButton (GameObject btn)
     {
-        ButtonIndex = int.Parse(btn.name);
-
         Back (Sprite_Black);
     }
 
@@ -120,16 +128,21 @@ public class ButtonTipsUI : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
+}
 
-    public class ButtonText
+
+public class ButtonText
+{
+    public int Id;
+    public string Text;
+
+    public ButtonText(int _id, string _text)
     {
-        public int Id;
-        public string Text;
+        Id = _id;
+        Text = _text;
+    }
+    public ButtonText()
+    {
 
-        public ButtonText (int _id, string _text)
-        {
-            Id = _id;
-            Text = _text;
-        }
     }
 }
