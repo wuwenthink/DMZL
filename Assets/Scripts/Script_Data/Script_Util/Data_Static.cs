@@ -14,11 +14,16 @@ using UnityEngine;
 public static class Data_Static
 {
     //存档路径
-    public static string save_pathMain = Application.dataPath + "/SaveData/";
-    public static string save_pathScene_Main = Application.dataPath + "/SaveData/SceneMain/";
-    public static string save_pathScene_Data = Application.dataPath + "/SaveData/SceneData/";
-    public static string save_pathScene_Grid = Application.dataPath + "/SaveData/SceneGrid/";
+    public static string save_pathMain = Application.dataPath + "/Resources/SaveData/";
+    public static string save_pathScene_Main = Application.dataPath + "/Resources/SaveData/SceneMain/";
+    public static string save_pathScene_Data = Application.dataPath + "/Resources/SaveData/SceneData/";
+    public static string save_pathScene_Grid = Application.dataPath + "/Resources/SaveData/SceneGrid/";
     public static string save_DataName = "/SaveData.json";
+
+    //Resources读取路径
+    public static string Res_pathScene_Main = "SaveData/SceneMain/";
+    public static string Res_pathScene_Data = "SaveData/SceneData/";
+    public static string Res_pathScene_Grid = "SaveData/SceneGrid/";
 
     //各UI界面prefab路径
     //BUSINESS

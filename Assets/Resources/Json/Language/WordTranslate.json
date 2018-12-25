@@ -441,10 +441,10 @@
       "chinese" : "变更时间模式，需要结束今天的行程，确定吗？"
    }, 
    "Tips_System_23" : { 
-      "chinese" : "0"
+      "chinese" : "返回"
    }, 
    "Tips_System_24" : { 
-      "chinese" : "0"
+      "chinese" : "取消"
    }, 
    "Tips_Title_1" : { 
       "chinese" : "新消息"
@@ -2148,7 +2148,7 @@
       "chinese" : "保存失败，当前场景为空。"
    }, 
    "BuildingMode_17" : { 
-      "chinese" : "保存成功，但有{0}个区域中没有建筑。"
+      "chinese" : "保存成功，但模块中没有建筑。"
    }, 
    "BuildingMode_18" : { 
       "chinese" : "当前操作：读取场景信息"
@@ -2209,5 +2209,8 @@
    }, 
    "BuildingMode_37" : { 
       "chinese" : "查看已有场景"
+   }, 
+   "BuildingMode_38" : { 
+      "chinese" : "是否返回场景选择模式？"
    }
 }

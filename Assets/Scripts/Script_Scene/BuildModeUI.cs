@@ -11,8 +11,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using LitJson;
-using SimpleJSON;
-using System.Text.RegularExpressions;
 
 public class BuildModeUI : MonoBehaviour 
 {
@@ -64,7 +62,6 @@ public class BuildModeUI : MonoBehaviour
     /// 单元格大小
     /// </summary>
     public float GridSize;
-    Dictionary<string, string> Dic_AllSceneMain;
     string sceneName_Now;
     SystemTipsUI systemTips;
     ButtonTipsUI buttonTips;
@@ -114,7 +111,6 @@ public class BuildModeUI : MonoBehaviour
         GameObject_GroundBox.SetActive(false);
         GameObject_Info.SetActive(false);
         GameObject_PartCreating.SetActive(false);
-        IsSelected = false;
         Have_SceneModel = new Dictionary<int, Map_SceneModel>();
         Dic_NowScene = new Dictionary<int, MapScene>();
 
@@ -170,22 +166,26 @@ public class BuildModeUI : MonoBehaviour
         else
         {
             Dic_NowScene.Clear();
-            TextAsset[] ta = Resources.LoadAll(Data_Static.save_pathScene_Main) as TextAsset[];
+            TextAsset[] ta = Resources.LoadAll<TextAsset>(Data_Static.Res_pathScene_Main);
             if (ta == null)
             {
                 GameObject go = CommonFunc.GetInstance.UI_Instantiate(Data_Static.UIpath_LableTips, FindObjectOfType<UIRoot>().transform, Vector3.zero, Vector3.one).gameObject;
                 go.GetComponent<LableTipsUI>().SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_37"), LanguageMgr.GetInstance.GetText("BuildingMode_36"));
+
+                Button_ItemEX.SetActive(false);
                 return;
             }
 
             foreach (var item in ta)
             {
-                JsonData jd = JsonMapper.ToObject(item.text);
-                MapScene sceneData = new MapScene();
-                sceneData.id = (int)jd["id"];
-                sceneData.writeName = jd["writeName"].ToString();
-                sceneData.modelID = (int)jd["modelID"];
-                sceneData.Dic_MapPart = new Dictionary<int, MapPart>();
+                MapScene_Data sceneData = new MapScene_Data();
+                sceneData = JsonMapper.ToObject<MapScene_Data>(item.text);
+                MapScene mss = new MapScene();
+                mss.id = sceneData.id;
+                mss.writeName = sceneData.writeName;
+                mss.modelID = sceneData.modelID;
+                mss.Dic_MapPart = new Dictionary<int, MapPart>();
+
                 Map_SceneModel ms = SelectDao.GetDao().SelectMap_SceneModel(sceneData.modelID);
                 Transform go = CommonFunc.GetInstance.UI_Instantiate(Button_ItemEX.transform, GameObject_Pos.transform, Vector3.zero, Vector3.one);
                 go.Find("Label_Name").GetComponent<UIText>().SetText(false, sceneData.writeName);
@@ -195,10 +195,10 @@ public class BuildModeUI : MonoBehaviour
                 ut.height = 64;
                 go.name = sceneData.id.ToString();
                 UIEventListener.Get(go.gameObject).onClick = LoadModel;
-                Dic_NowScene.Add(sceneData.id, sceneData);
+                Dic_NowScene.Add(sceneData.id, mss);
             }
-            GameObject_Pos.GetComponent<UIGrid>().enabled = true;
             Button_ItemEX.SetActive(false);
+            GameObject_Pos.GetComponent<UIGrid>().enabled = true;
         }
     }
 
@@ -274,6 +274,13 @@ public class BuildModeUI : MonoBehaviour
     {
         GameObject_SceneInfo.SetActive(true);
         int id = int.Parse(btn.name);
+        //输入名称初始化
+        Input_SceneName.value = newScene.writeName;
+        Input_SceneName.characterLimit = 12;
+        Input_SceneName.validation = UIInput.Validation.Filename;
+        EventDelegate.Add(Input_SceneName.onChange, Rename_SceneInfo);
+        Rename_SceneInfo();
+
         Map_SceneModel ms = SelectDao.GetDao().SelectMap_SceneModel(id);
         UITexture ut = Texture_ItemPici.GetComponent<UITexture>();
         ut.mainTexture = Resources.Load<Texture>(Data_Static.MapPic_SceneModel + ms.icon);
@@ -311,10 +318,11 @@ public class BuildModeUI : MonoBehaviour
     /// <param name="btn"></param>
     void SaveSceneB(GameObject btn)
     {
+        newScene.writeName = sceneName_Now;
         //创建文本提示
         GameObject go = CommonFunc.GetInstance.UI_Instantiate(Data_Static.UIpath_LableTips, FindObjectOfType<UIRoot>().transform, Vector3.zero, Vector3.one).gameObject;
         //保存主数据、建筑数据、格子数据到一个文件中
-        Dictionary<string, string> dic_AllPartData = new Dictionary<string, string>();
+        Dictionary<string, MapPart_Data> dic_AllPartData = new Dictionary<string, MapPart_Data>();
         string Grid = "";
         string Building = "";
         foreach (var item in newScene.Dic_MapPart)
@@ -326,80 +334,45 @@ public class BuildModeUI : MonoBehaviour
             }
             else
             {
-                //如果建筑条目数量不等于模块数量，可以保存但是弹出提醒
-                if (Dic_SavePart_Building.Count != newScene.Dic_MapPart.Count)
+                Dictionary<string, PartBuilding_Data> dic_partData = new Dictionary<string, PartBuilding_Data>();
+                foreach (var build in item.Value.Dic_Building)
                 {
-                    if (item.Value.Dic_Building.Count > 0)
-                    {
-                        Building = Dic_SavePart_Building[item.Value.id];
-                    }
-                    else
-                    {
-                        Building = "";
-                    }
-                    go.GetComponent<LableTipsUI>().SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_14"),
-                        string.Format(LanguageMgr.GetInstance.GetText("BuildingMode_17"), newScene.Dic_MapPart.Count - Dic_SavePart_Building.Count));
+                    PartBuilding_Data building_Data = new PartBuilding_Data();
+                    building_Data.id = build.Value.id;
+                    building_Data.writeName = build.Value.writeName;
+                    building_Data.modelID = build.Value.modelID;
+                    building_Data.upPart = build.Value.upPart;
+                    building_Data.Dic_FixedNPC = "";
+                    dic_partData.Add(building_Data.id.ToString(), building_Data);
                 }
-                else
-                {
-                    if (item.Value.Dic_Building.Count > 0)
-                    {
-                        Building = Dic_SavePart_Building[item.Value.id];
-                    }
-                    else
-                    {
-                        Building = "";
-                    }
-                    go.GetComponent<LableTipsUI>().SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_14"),
-                        string.Format(LanguageMgr.GetInstance.GetText("BuildingMode_15"), newScene.Dic_MapPart.Count));
-                }
+                Building = JsonReader.ChangeDicToRegex(dic_partData);
+                go.GetComponent<LableTipsUI>().SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_14"),
+                    string.Format(LanguageMgr.GetInstance.GetText("BuildingMode_15"), newScene.Dic_MapPart.Count));
+                Grid = JsonReader.ChangeStringToRegex(item.Value.Dic_MapBox);
 
-                Grid = Dic_SavePart_Grid[item.Value.id];
-                ////存储字段和内容到json里。已知BUG：多模块内容显示错误（只保留最后一个的数据）
-                //JSONClass json = new JSONClass();
-                //json["id"] = item.Value.id.ToString();
-                //json["writeName"] = item.Value.writeName;
-                //json["sizeX"] = item.Value.sizeX.ToString();
-                //json["sizeY"] = item.Value.sizeY.ToString();
-                //json["modelID"] = item.Value.modelID.ToString();
-                //json["upScene"] = item.Value.upScene.ToString();
-                //json["Dic_MapBox"] = Grid;
-                //json["Dic_Building"] = Building;
-
-                //使用JsonWriter写入字段和内容，已知缺点：中文乱码
-                JsonWriter json = new JsonWriter();
-                json.WriteObjectStart();
-                json.WritePropertyName("id"); json.Write(item.Value.id);
-                json.WritePropertyName("writeName"); json.Write(item.Value.writeName);
-                json.WritePropertyName("sizeX"); json.Write(item.Value.sizeX);
-                json.WritePropertyName("sizeY"); json.Write(item.Value.sizeY);
-                json.WritePropertyName("modelID"); json.Write(item.Value.modelID);
-                json.WritePropertyName("upScene"); json.Write(item.Value.upScene);
-                json.WritePropertyName("Dic_MapBox"); json.Write(Grid);
-                json.WritePropertyName("Dic_Building"); json.Write(Building);
-                json.WriteObjectEnd();
-                string all = Regex.Unescape(json.ToString());
-                dic_AllPartData.Add(item.Value.id.ToString(), all);
+                //使用JsonWriter写入字段和内容
+                MapPart_Data mp = new MapPart_Data();
+                mp.id = item.Value.id;
+                mp.writeName = item.Value.writeName;
+                mp.sizeX = item.Value.sizeX;
+                mp.sizeY = item.Value.sizeY;
+                mp.posXY = item.Value.posXY;
+                mp.modelID = item.Value.modelID;
+                mp.upScene = item.Value.upScene;
+                mp.Dic_MapBox = Grid;
+                mp.Dic_Building = Building;
+                dic_AllPartData.Add(item.Value.id.ToString(), mp);
             }
         }
         //保存场景主信息
         JsonWriter scene = new JsonWriter();
-        scene.WriteObjectStart();
-        scene.WritePropertyName("id"); scene.Write(newScene.id);
-        scene.WritePropertyName("writeName"); scene.Write(newScene.writeName);
-        scene.WritePropertyName("modelID"); scene.Write(newScene.modelID);
-        scene.WriteObjectEnd();
-        string se = Regex.Unescape(scene.ToString());
-        Dic_AllSceneMain = new Dictionary<string, string>();
-        if (Dic_AllSceneMain.ContainsKey(newScene.id.ToString()))
-        {
-            Dic_AllSceneMain[newScene.id.ToString()] = se;
-        }
-        else
-        {
-            Dic_AllSceneMain.Add(newScene.id.ToString(), se);
-        }
-        JsonReader.WriteJson(Data_Static.save_pathScene_Main + newScene.id + ".json", Dic_AllSceneMain);
+        MapScene_Data md = new MapScene_Data();
+        md.id = newScene.id;
+        md.writeName = newScene.writeName;
+        md.modelID = newScene.modelID;
+        md.Dic_MapPart = "";
+
+        JsonReader.WriteJson(Data_Static.save_pathScene_Main + newScene.id + ".json", md);
         JsonReader.WriteJson(Data_Static.save_pathScene_Data + newScene.id + ".json", dic_AllPartData);
         JsonReader.WriteJson(Data_Static.save_pathScene_Grid + newScene.id + ".json", Dic_AllGrid);
         
@@ -546,13 +519,6 @@ public class BuildModeUI : MonoBehaviour
     /// </summary>
     private Dictionary<string, int> Dic_AllGrid;
     /// <summary>
-    /// 存储模块格子数据的字典。
-    /// </summary>
-    Dictionary<int, string> Dic_SavePart_Grid;
-    /// <summary>
-    /// 存储模块建筑数据的字典。
-    /// </summary>
-    Dictionary<int, string> Dic_SavePart_Building;
     /// <summary>
     /// 选中场景的模板ID
     /// </summary>
@@ -639,21 +605,62 @@ public class BuildModeUI : MonoBehaviour
         GameObject_Out.SetActive(false);
         GameObject_Part.SetActive(true);
         isOut = false;
+        IsSelected = false;
         if (!isNew)
         {
             Map_SceneModel ms = SelectDao.GetDao().SelectMap_SceneModel(ModelID);
             GameObject_Info.SetActive(true);
             //读取场景模块数据
-            TextAsset ta_Part = Resources.Load(Data_Static.save_pathScene_Data + newScene.id + ".json") as TextAsset;
-            newScene.Dic_MapPart = new Dictionary<int, MapPart>();
-            JsonData jd_p = JsonMapper.ToObject(ta_Part.text);
-            Dic_SavePart_Grid = new Dictionary<int, string>();
-            Dic_SavePart_Grid = JsonMapper.ToObject<Dictionary<int, string>>(jd_p["id"].ToString());
-            Dic_SavePart_Building = new Dictionary<int, string>();
+            Dictionary<string, MapPart_Data> dic_partData = new Dictionary<string, MapPart_Data>();
+            TextAsset ta_Part = Resources.Load<TextAsset>(Data_Static.Res_pathScene_Data + newScene.id + ".json");
+            dic_partData = JsonReader.ReadJson<MapPart_Data>(ta_Part);
+            foreach (var item in dic_partData)
+            {
+                Dictionary<string, MapBox> dic_grid = new Dictionary<string, MapBox>();
+                dic_grid = JsonMapper.ToObject<Dictionary<string, MapBox>> (item.Value.Dic_MapBox);
+                Dictionary<string, PartBuilding_Data> dic_buildData = new Dictionary<string, PartBuilding_Data>();
+                dic_buildData = JsonMapper.ToObject<Dictionary<string, PartBuilding_Data>>(item.Value.Dic_Building);
+                Dictionary<int, PartBuilding> dic_build = new Dictionary<int, PartBuilding>();
+                foreach (var build in dic_buildData)
+                {
+                    PartBuilding pb = new PartBuilding();
+                    pb.id = build.Value.id;
+                    pb.writeName = build.Value.writeName;
+                    pb.modelID = build.Value.modelID;
+                    pb.upPart = build.Value.upPart;
+                    pb.Dic_FixedNPC = new Dictionary<int, buildingFixedNPC>();
+                    dic_build.Add(int.Parse(build.Key), pb);
+                }
+                MapPart mp = new MapPart();
+                mp.id = item.Value.id;
+                mp.writeName = item.Value.writeName;
+                mp.sizeX = item.Value.sizeX;
+                mp.sizeY = item.Value.sizeY;
+                mp.posXY = item.Value.posXY;
+                mp.modelID = item.Value.modelID;
+                mp.upScene = item.Value.upScene;
+                mp.Dic_MapBox = dic_grid;
+                mp.Dic_Building = dic_build;
+                newScene.Dic_MapPart.Add(item.Value.id, mp);
+            }
+
             //生成模块
             alreadyParts = new Dictionary<int, GameObject>();
             foreach (var item in newScene.Dic_MapPart)
             {
+                Map_PartModel mp = SelectDao.GetDao().SelectMap_PartModel(item.Value.modelID);
+                int countX = item.Value.sizeX;
+                int countY = item.Value.sizeY;
+                SelectedBox.SetActive(true);
+                SpriteRenderer srB = SelectedBox.GetComponent<SpriteRenderer>();
+                srB.sprite = Resources.Load<Sprite>(Data_Static.MapPic_PartModel + mp.mapIcon);
+                srB.drawMode = SpriteDrawMode.Tiled;
+                srB.size = new Vector2(countX * GridSize, countY * GridSize);
+                SelectedBox.GetComponent<BoxCollider2D>().size = new Vector2(countX * GridSize, countY * GridSize);
+                //SelectedBox.transform.localScale = new Vector3(distanceX, distanceY, 1);
+                float posX = float.Parse(item.Value.posXY.Split('_')[0]);
+                float posY = float.Parse(item.Value.posXY.Split('_')[1]);
+                SelectedBox.transform.localPosition = new Vector3(posX, posY, 0);
                 //将矩形放入已完成目录下，并且生成碰撞体
                 GameObject already = Instantiate(SelectedBox);
                 already.transform.parent = Part_Already.transform;
@@ -688,14 +695,13 @@ public class BuildModeUI : MonoBehaviour
         {
             Map_SceneModel ms = SelectDao.GetDao().SelectMap_SceneModel(ModelID);
             GameObject_Info.SetActive(true);
-            Dic_SavePart_Grid = new Dictionary<int, string>();
-            Dic_SavePart_Building = new Dictionary<int, string>();
+
             alreadyParts = new Dictionary<int, GameObject>();
             isHaveBox = false;
             PartGo = null;
             newScene = new MapScene();
             newScene.id = ModelID;
-            newScene.writeName = ms.writeName;
+            newScene.writeName = sceneName_Now;
             newScene.modelID = ModelID;
             newScene.Dic_MapPart = new Dictionary<int, MapPart>();
             Button_Save.name = newScene.id.ToString();
@@ -1024,7 +1030,7 @@ public class BuildModeUI : MonoBehaviour
         Label_Tip.SetText(false, LanguageMgr.GetInstance.GetText("BuildingMode_18"));
         Label_Tip.gameObject.GetComponent<UILabel>().color = new Color(0 / 255, 0 / 255, 0 / 255, 255 / 255);
         int ID;
-        if (!int.TryParse(PartGo.name,out ID))
+        if (PartGo == null || !int.TryParse(PartGo.name,out ID))
         {
             return;
         }
@@ -1034,7 +1040,6 @@ public class BuildModeUI : MonoBehaviour
         Label_CreatingName.SetText(false, part.writeName);
         Label_PartAreaSizeX.SetText(false, part.sizeX.ToString());
         Label_PartAreaSizeY.SetText(false, part.sizeY.ToString());
-        GameObject_PartCreating.SetActive(true);
         //如果碰到的为已生成的模块，读取信息
         if (PartGo != null)
         {
@@ -1260,7 +1265,6 @@ public class BuildModeUI : MonoBehaviour
     /// <param name="btn"></param>
     void SavePart(GameObject btn)
     {
-        string dic_Grid = "";
         int minGridNum = int.Parse(SelectDao.GetDao().SelectSystem_Config(2).values);
         int maxGridNum = int.Parse(SelectDao.GetDao().SelectSystem_Config(1).values);
         tipLabel = CommonFunc.GetInstance.UI_Instantiate(Data_Static.UIpath_LableTips, FindObjectOfType<UIRoot>().transform, Vector3.zero, Vector3.one).GetComponent<LableTipsUI>();
@@ -1271,24 +1275,18 @@ public class BuildModeUI : MonoBehaviour
             {
                 tipLabel.SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_11"), string.Format(LanguageMgr.GetInstance.GetText("BuildingMode_12"),
                          newPart.writeName, newPart.id, newPart.Dic_MapBox.Count));
-                foreach (var item in newPart.Dic_MapBox)
-                {
-                    dic_Grid += JsonReader.ChangeStringToRegex(item.Value);
-                }
-                //在场景类中写入模块信息。
-                newScene.Dic_MapPart.Add(newPart.id, newPart);
-                Dic_SavePart_Grid.Add(newPart.id, dic_Grid);
 
                 //将矩形放入已完成目录下，并且生成碰撞体
+                newPart.posXY = SelectedBox.transform.localPosition.x + "_" + SelectedBox.transform.localPosition.y;
                 GameObject already = Instantiate(SelectedBox);
                 already.transform.parent = Part_Already.transform;
                 //already.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(Data_Static.MapPic_PartModel + SelectDao.GetDao().SelectMap_PartModel(newPart.modelID).mapIcon);
                 already.name = newPart.id.ToString();
                 already.layer = 9;
                 alreadyParts.Add(newPart.id, already);
-
+                newScene.Dic_MapPart.Add(newPart.id, newPart);
+                isHaveBox = false;
                 IsSelected = false;
-                GameObject_PartCreating.SetActive(false);
                 //NGUITools.DestroyChildren(Part_Temp.transform);
             }
             else if (fixedSavePart == FixedSavePart.tooMin)
@@ -1341,8 +1339,7 @@ public class BuildModeUI : MonoBehaviour
         {
             int partID = int.Parse(btn.name);
             newScene.Dic_MapPart.Remove(partID);
-            Dic_SavePart_Grid.Remove(partID);
-            Dic_SavePart_Building.Remove(partID);
+
             if (alreadyParts.ContainsKey(partID))
             {
                 Destroy(alreadyParts[partID]);
@@ -1505,15 +1502,15 @@ public class BuildModeUI : MonoBehaviour
         {
             newScene.Dic_MapPart[id].writeName = partName_Now;
         }
-        newScene.Dic_MapPart[id].Dic_Building = tempPartBuilding;
-        string building = "";
-        foreach (var item in tempPartBuilding)
+        //如果建筑条目数量不等于模块数量，可以保存但是弹出提醒
+        if (tempPartBuilding.Count == 0)
         {
-            building += JsonReader.ChangeStringToRegex(item.Value);
+            tipLabel = CommonFunc.GetInstance.UI_Instantiate(Data_Static.UIpath_LableTips, FindObjectOfType<UIRoot>().transform, Vector3.zero, Vector3.one).gameObject.GetComponent<LableTipsUI>();
+            tipLabel.gameObject.SetActive(true);
+            tipLabel.GetComponent<LableTipsUI>().SetAll(true, LanguageMgr.GetInstance.GetText("BuildingMode_14"),LanguageMgr.GetInstance.GetText("BuildingMode_17"));
         }
+        newScene.Dic_MapPart[id].Dic_Building = tempPartBuilding;
 
-        Dic_SavePart_Building.Remove(id);
-        Dic_SavePart_Building.Add(id, building);
         GameObject_GroundBox.SetActive(false);
 
     }
@@ -1788,7 +1785,7 @@ public class PartBuilding
 }
 
 /// <summary>
-/// 地图中的模块（存储信息）
+/// 地图中的模块
 /// </summary>
 public class MapPart
 {
@@ -1809,6 +1806,10 @@ public class MapPart
     /// </summary>
     public int sizeY { get; set; }
     /// <summary>
+    /// 中心点坐标
+    /// </summary>
+    public string posXY { get; set; }
+    /// <summary>
     /// 模块模板ID
     /// </summary>
     public int modelID { get; set; }
@@ -1824,12 +1825,13 @@ public class MapPart
     /// 所包含的建筑列表
     /// </summary>
     public Dictionary<int, PartBuilding> Dic_Building { get; set; }
-    public MapPart(int _id, string _writeName, int _sizeX, int _sizeY, int _modelID, int _upScene, Dictionary<string, MapBox> _Dic_MapBox, Dictionary<int, PartBuilding> _Dic_Building)
+    public MapPart(int _id, string _writeName, int _sizeX, int _sizeY, string _posXY, int _modelID, int _upScene, Dictionary<string, MapBox> _Dic_MapBox, Dictionary<int, PartBuilding> _Dic_Building)
     {
         id = _id;
         writeName = _writeName;
         sizeX = _sizeX;
         sizeY = _sizeY;
+        posXY = _posXY;
         modelID = _modelID;
         upScene = _upScene;
         Dic_MapBox = _Dic_MapBox;
@@ -1876,3 +1878,135 @@ public class MapScene
     }
 }
 
+/*==========================存储数据用的class===============================*/
+/// <summary>
+/// 模块中的建筑（用于存储）
+/// </summary>
+public class PartBuilding_Data
+{
+    /// <summary>
+    /// 建筑ID
+    /// </summary>
+    public int id { get; set; }
+    /// <summary>
+    /// 建筑可修改名称
+    /// </summary>
+    public string writeName { get; set; }
+    /// <summary>
+    /// 建筑模板ID
+    /// </summary>
+    public int modelID { get; set; }
+    /// <summary>
+    /// 建筑所属的模块ID
+    /// </summary>
+    public int upPart { get; set; }
+    /// <summary>
+    /// 建筑中的固定NPC
+    /// </summary>
+    public string Dic_FixedNPC { get; set; }
+    public PartBuilding_Data(int _id, string _writeName, int _modelID, int _upPart, string _Dic_FixedNPC)
+    {
+        writeName = _writeName;
+        id = _id;
+        modelID = _modelID;
+        upPart = _upPart;
+        Dic_FixedNPC = _Dic_FixedNPC;
+    }
+    public PartBuilding_Data()
+    {
+
+    }
+}
+/// <summary>
+/// 地图中的模块（用于存储）
+/// </summary>
+public class MapPart_Data
+{
+    /// <summary>
+    /// 模块（区域）ID
+    /// </summary>
+    public int id { get; set; }
+    /// <summary>
+    /// 模块（区域）可修改名称
+    /// </summary>
+    public string writeName { get; set; }
+    /// <summary>
+    /// 模块X大小
+    /// </summary>
+    public int sizeX { get; set; }
+    /// <summary>
+    /// 模块Y大小
+    /// </summary>
+    public int sizeY { get; set; }
+    /// <summary>
+    /// 中心点坐标
+    /// </summary>
+    public string posXY { get; set; }
+    /// <summary>
+    /// 模块模板ID
+    /// </summary>
+    public int modelID { get; set; }
+    /// <summary>
+    /// 建筑所属的场景ID
+    /// </summary>
+    public int upScene { get; set; }
+    /// <summary>
+    /// 所包含的格子列表
+    /// </summary>
+    public string Dic_MapBox { get; set; }
+    /// <summary>
+    /// 所包含的建筑列表
+    /// </summary>
+    public string Dic_Building { get; set; }
+    public MapPart_Data(int _id, string _writeName, int _sizeX, int _sizeY, string _posXY, int _modelID, int _upScene, string _Dic_MapBox, string _Dic_Building)
+    {
+        id = _id;
+        writeName = _writeName;
+        sizeX = _sizeX;
+        sizeY = _sizeY;
+        posXY = _posXY;
+        modelID = _modelID;
+        upScene = _upScene;
+        Dic_MapBox = _Dic_MapBox;
+        Dic_Building = _Dic_Building;
+    }
+    public MapPart_Data()
+    {
+
+    }
+}
+/// <summary>
+/// 地图中的场景（用于存储）
+/// </summary>
+public class MapScene_Data
+{
+    /// <summary>
+    /// 场景（城市/野外）ID
+    /// </summary>
+    public int id { get; set; }
+    /// <summary>
+    /// 场景（城市/野外）可修改名称
+    /// </summary>
+    public string writeName { get; set; }
+    /// <summary>
+    /// 场景模板ID
+    /// </summary>
+    public int modelID { get; set; }
+    /// <summary>
+    /// 所包含的模块列表
+    /// </summary>
+    public string Dic_MapPart { get; set; }
+
+    public MapScene_Data(int _id, string _writeName, int _modelID, string _Dic_MapPart)
+    {
+        id = _id;
+        writeName = _writeName;
+        modelID = _modelID;
+        Dic_MapPart = _Dic_MapPart;
+    }
+
+    public MapScene_Data()
+    {
+
+    }
+}

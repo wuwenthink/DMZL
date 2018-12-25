@@ -725,7 +725,7 @@ BuildingMode_13,保存失败，当前所选区域为空。
 BuildingMode_14,当前操作：场景保存
 BuildingMode_15,保存成功，场景区域数量为{0}个。
 BuildingMode_16,保存失败，当前场景为空。
-BuildingMode_17,保存成功，但有{0}个区域中没有建筑。
+BuildingMode_17,保存成功，但模块中没有建筑。
 BuildingMode_18,当前操作：读取场景信息
 BuildingMode_19,请重新命名！
 BuildingMode_20,输入有误，请重新输入！
