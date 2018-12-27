@@ -68,7 +68,7 @@ public class TheWorldUI : MonoBehaviour
         GameObject_Top.PlayForward();
         GameObject_Bottom.PlayForward();
         GameObject_Right.PlayForward();
-        //FindObjectOfType<WorldSceneChange>().SceneChange(Data_Static.Map_Fight_Scene);
+        FindObjectOfType<WorldSceneChange>().SceneChange(Data_Static.Res_pathScene_Main, 8);
     }
 
     void Awake ()
@@ -99,6 +99,7 @@ public class TheWorldUI : MonoBehaviour
         timeManager.hungry = Charactor.GetInstance.hunger;
         timeManager.temp = Charactor.GetInstance.temp;
         timeManager.mood = Charactor.GetInstance.mood;
+
     }
 
     void Update ()

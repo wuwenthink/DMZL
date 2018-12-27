@@ -36,7 +36,7 @@ public class MapControl_Move : MonoBehaviour {
         limit_Left = 0;
         limit_Right = 0;
 
-        isOpenMouse = true;
+        isOpenMouse = false;
     }
 	
 

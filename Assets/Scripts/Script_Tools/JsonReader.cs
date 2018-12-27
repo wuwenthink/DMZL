@@ -20,8 +20,36 @@ public static class JsonReader
     public static Dictionary<string, T> ReadJson<T>(string fileName)
     {
         TextAsset ta = Resources.Load(fileName) as TextAsset;
-        if (ta.text == null) { Debug.Log("根据路径未找到对应表格数据"); };
-        Dictionary<string, T> d = JsonMapper.ToObject<Dictionary<string, T>>(ta.text);
+        if (ta == null)
+        {
+            Debug.Log("根据路径未找到对应表格数据");
+            return null;
+        };
+        string jsondata = ChangeStringToUTF8(ta.text).Trim();
+        Dictionary<string, T> d = JsonMapper.ToObject<Dictionary<string, T>>(jsondata);
+        return d;
+    }
+
+    /// <summary>
+    /// 读取json数据，string，返回id和类对象互相对应的字典。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
+    public static Dictionary<string, T> ReadJsonS<T>(string jsonData)
+    {
+        Dictionary<string, T> d = JsonMapper.ToObject<Dictionary<string, T>>(jsonData);
+        return d;
+    }
+    /// <summary>
+    /// 读取json数据，string，返回list对象。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
+    public static List<T> ReadJsonList<T>(string jsonData)
+    {
+        List<T> d = JsonMapper.ToObject<List<T>>(jsonData);
         return d;
     }
 
@@ -34,6 +62,18 @@ public static class JsonReader
     public static Dictionary<string, T> ReadJson<T>(TextAsset ta)
     {
         Dictionary<string, T> d = JsonMapper.ToObject<Dictionary<string, T>>(ta.text);
+        return d;
+    }
+
+    /// <summary>
+    /// 读取json数据，string，返回类对象。
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
+    public static T ReadJsonClass<T>(string jsonData)
+    {
+        T d = JsonMapper.ToObject<T>(jsonData);
         return d;
     }
 

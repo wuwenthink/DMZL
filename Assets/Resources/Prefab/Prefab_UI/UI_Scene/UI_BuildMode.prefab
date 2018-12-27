@@ -11883,6 +11883,7 @@ MonoBehaviour:
   GameObject_Part: {fileID: 1624353765563520}
   Button_Nomal: {fileID: 1987662176836742}
   Button_Special: {fileID: 1025844727373512}
+  GameObject_Control: {fileID: 1226198978093038}
   Button_Clear: {fileID: 1219176826588252}
   Button_Return: {fileID: 1913210546169272}
   Button_Save: {fileID: 1360503892437808}

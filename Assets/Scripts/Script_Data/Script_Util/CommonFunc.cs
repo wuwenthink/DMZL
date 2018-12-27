@@ -35,6 +35,7 @@ public class CommonFunc : MonoBehaviour
 
     public GameObject OpenWindow { get; set; }
 
+
     /// <summary>
     /// 地图实例化
     /// </summary>
@@ -43,41 +44,28 @@ public class CommonFunc : MonoBehaviour
     /// <param name="_localPosion"></param>
     /// <param name="_localScale"></param>
     /// <returns></returns>
-    public Transform Map_Instantiate(string _prefabPath, Transform _parent)
+    public MapScene Map_Instantiate(string _prefabPath, int id)
     {
-        Transform target = (Resources.Load(_prefabPath) as GameObject).transform;
-        if (!target)
+        Dictionary<int, MapScene> Dic_NowScene = new Dictionary<int, MapScene>();
+        TextAsset[] ta = Resources.LoadAll<TextAsset>(_prefabPath);
+        foreach (var item in ta)
         {
-            Debug.LogError(_prefabPath + " Not Found!!!");
-            return null;
+            MapScene_Data sceneData = new MapScene_Data();
+            sceneData = JsonReader.ReadJsonClass<MapScene_Data>(item.text);
+            MapScene mss = new MapScene();
+            mss.id = sceneData.id;
+            mss.writeName = sceneData.writeName;
+            mss.modelID = sceneData.modelID;
+            mss.Dic_MapPart = new Dictionary<int, MapPart>();
+            Dic_NowScene.Add(sceneData.id, mss);
         }
-        Transform clone = Instantiate(target, _parent);
-        float posX = clone.GetComponent<TiledMap>().MapWidthInPixels * -1f / 200f;
-        float posY = clone.GetComponent<TiledMap>().MapHeightInPixels / 200f;
-        clone.localPosition = new Vector3(posX, posY,0);
-        clone.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+        MapScene newScene = new MapScene();
+        newScene = Dic_NowScene[id];
 
-        OpenWindow = clone.gameObject;
-        return clone;
+        return newScene;
+
     }
 
-    /// <summary>
-    /// 地图实例化
-    /// </summary>
-    /// <param name="_target"></param>
-    /// <param name="_parent"></param>
-    /// <param name="_localPosion"></param>
-    /// <param name="_localScale"></param>
-    /// <returns></returns>
-    public Transform Map_Instantiate(Transform _target, Transform _parent)
-    {
-        Transform clone = Instantiate(_target, _parent);
-        float posX = clone.GetComponent<TiledMap>().MapWidthInPixels * (-1 / 200);
-        float posY = clone.GetComponent<TiledMap>().MapHeightInPixels / 200;
-        clone.localPosition = new Vector3(posX, posY, 0);
-        clone.localScale = new Vector3(0.01f, 0.01f, 0.01f);
-        return clone;
-    }
 
     /// <summary>
     /// UI实例化
@@ -499,6 +487,52 @@ public class CommonFunc : MonoBehaviour
         }
         return moneyCount;
     }
+
+
+    ///// <summary>
+    ///// 地图实例化
+    ///// </summary>
+    ///// <param name="_prefabPath"></param>
+    ///// <param name="_parent"></param>
+    ///// <param name="_localPosion"></param>
+    ///// <param name="_localScale"></param>
+    ///// <returns></returns>
+    //public Transform Map_Instantiate(string _prefabPath, Transform _parent)
+    //{
+    //    Transform target = (Resources.Load(_prefabPath) as GameObject).transform;
+    //    if (!target)
+    //    {
+    //        Debug.LogError(_prefabPath + " Not Found!!!");
+    //        return null;
+    //    }
+    //    Transform clone = Instantiate(target, _parent);
+    //    float posX = clone.GetComponent<TiledMap>().MapWidthInPixels * -1f / 200f;
+    //    float posY = clone.GetComponent<TiledMap>().MapHeightInPixels / 200f;
+    //    clone.localPosition = new Vector3(posX, posY,0);
+    //    clone.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+
+    //    OpenWindow = clone.gameObject;
+    //    return clone;
+    //}
+
+    ///// <summary>
+    ///// 地图实例化
+    ///// </summary>
+    ///// <param name="_target"></param>
+    ///// <param name="_parent"></param>
+    ///// <param name="_localPosion"></param>
+    ///// <param name="_localScale"></param>
+    ///// <returns></returns>
+    //public Transform Map_Instantiate(Transform _target, Transform _parent)
+    //{
+    //    Transform clone = Instantiate(_target, _parent);
+    //    float posX = clone.GetComponent<TiledMap>().MapWidthInPixels * (-1 / 200);
+    //    float posY = clone.GetComponent<TiledMap>().MapHeightInPixels / 200;
+    //    clone.localPosition = new Vector3(posX, posY, 0);
+    //    clone.localScale = new Vector3(0.01f, 0.01f, 0.01f);
+    //    return clone;
+    //}
+
 
     /// <summary>
     /// 按身份生成随机NPC（工作人员）的数据
