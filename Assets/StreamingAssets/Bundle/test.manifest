@@ -1,0 +1,40 @@
+ManifestFileVersion: 0
+CRC: 2658563935
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 68565d20488203edf3bd2a558165f96a
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 1954696dac0dcefba48cdec96095029b
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c781e4e640b963d4aa3dcdbf274ae79c, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+Assets:
+- Assets/Test/Resources/UI/UI_Action_Option.prefab
+Dependencies: []
