@@ -1,4 +1,5 @@
 ﻿using BuildTemplate;
+using Common;
 using Map;
 using RoleSpace;
 using RoleTemplate;

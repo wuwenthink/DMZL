@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Common
 {
-    public class Alert :UIWindow
+    public class Alert :SceneUI
     {
         /// <summary>
         /// 单例
@@ -45,11 +45,11 @@ namespace Common
         }
         
         /// <summary>
-        /// 显示
+        /// Debug.Log
         /// </summary>
         /// <param name="text"></param>
         /// <param name="action"></param>
-        public static void Display ( string text,UnityAction action = null )
+        public static void Log ( string text,UnityAction action = null )
         {
             //更改文字
             I.DebugText.text = text;

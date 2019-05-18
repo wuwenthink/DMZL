@@ -7,22 +7,6 @@ namespace Map
     /// </summary>
     public class MapBuildInteractProxy :MapBuildInteractProxyType
     {
-        public override string[] ListeningMessages
-        {
-            get
-            {
-                return new string[]
-                {
-                    //建筑功能触发
-                    MapMessage.Build+MapMessage.Interact,
-                };
-            }
-        }
-
-        public override void HandleMessage ( string letter,params object[] data )
-        {
-            BuildInteract(data[0] as Role,data[1] as Build);
-        }
 
         public override void BuildInteract ( Role role,Build build )
         {

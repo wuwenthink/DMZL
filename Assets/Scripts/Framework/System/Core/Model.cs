@@ -7,7 +7,7 @@ namespace Common
     /// 模型层
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class Model
+    public class Model
     {
         /// <summary>
         /// 功能代理者Map

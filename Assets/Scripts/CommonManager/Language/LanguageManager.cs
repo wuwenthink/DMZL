@@ -52,10 +52,10 @@ namespace Common
             //声明语言集合
             LanguageList = new List<string>();
             //从数据库读取语言类型
-            SqliteDataReader reader = DataManager.I.ReadData(" Select " + LanguageKey.LanguageType + " From " + LanguageKey.LanguageTypeTable);
-            while ( reader.Read() )
+            object[][] vs = DataManager.I.ReadData(" Select " + LanguageKey.LanguageType + " From " + LanguageKey.LanguageTypeTable);
+            for ( int i = 0 ; i < vs.Length ; i++ )
             {
-                LanguageList.Add(reader.GetString(0));
+                LanguageList.Add(vs[i][0]as string);
             }
             //实例Text字典
             TextDic = new Dictionary<string,Dictionary<string,List<Text>>>();
@@ -99,16 +99,37 @@ namespace Common
         }
 
         /// <summary>
+        /// 清空Text字典
+        /// </summary>
+        /// <param name="text"></param>
+        public void ClearTextDic ()
+        {
+            TextDic.Clear();
+        }
+        /// <summary>
+        /// 移除注册的Text
+        /// </summary>
+        public void RemoveText ( Text text )
+        {
+            foreach ( string Space in TextDic.Keys )
+            {
+                foreach ( string Key in TextDic[Space].Keys )
+                {
+                    if ( TextDic[Space][Key].Contains(text) ) TextDic[Space][Key].Remove(text);
+                    break;
+                }
+            }
+        }
+        /// <summary>
         /// 返回数据库对应tag的文字内容
         /// </summary>
         /// <param name="Table">表</param>
         /// <param name="tag">tag</param>
         public string LoadWard ( string Table,string tag )
         {
-            SqliteDataReader reader = DataManager.I.ReadData(" Select " + CurrentLanguage + " FROM " + Table + " WHERE tag = " + "'" + tag + "'");
-            reader.Read();
-            return reader.GetString(0);
-        }
 
+            object[][] data = DataManager.I.ReadData(" Select " + CurrentLanguage + " FROM " + Table + " WHERE tag = " + "'" + tag + "'");
+            return data[0][0].ToString();
+        }
     }
 }

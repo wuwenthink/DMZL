@@ -1,4 +1,6 @@
-﻿namespace Common
+﻿using UnityEngine;
+
+namespace Common
 {
     /// <summary>
     /// 对象池接口

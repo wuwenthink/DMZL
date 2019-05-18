@@ -11,7 +11,7 @@ namespace BuildTemplate
     {
         public void Function (Role role,Build build )
         {
-            Alert.Display("触发测试陷阱: 碰触陷阱角色名字"+ role.roleState.Name+",碰触陷阱数据："+ build.buildInfo.Date1);
+            Alert.Log("触发测试陷阱: 碰触陷阱角色名字"+ role.roleState.Name+",碰触陷阱数据："+ build.buildInfo.Date1);
         }
     }
 }

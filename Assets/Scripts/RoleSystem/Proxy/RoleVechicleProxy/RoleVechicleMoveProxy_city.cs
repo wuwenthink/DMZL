@@ -73,7 +73,7 @@ namespace RoleSpace
             //初始化载具类
             vechicleDic[role.roleState.RoleId].Init(role);
             //将步行者的Run方法放入UpdateManager中
-            UpdateManager.I.OnUptate(vechicleDic[role.roleState.RoleId].Move_city);
+            UpdateManager.I.OnUpdate(vechicleDic[role.roleState.RoleId].Move_city);
 
             //修改角色状态中的人物载具
             role.roleState.VechicleName = VechicleName;

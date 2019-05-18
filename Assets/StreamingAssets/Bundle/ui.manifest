@@ -1,0 +1,76 @@
+ManifestFileVersion: 0
+CRC: 3182099938
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: c8c3ad0e2be1170195ee441f62f13fe7
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 8d66584c43a76d04dfccf6736e651999
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1392445389, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1741964061, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -405508275, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: -113659843, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b73487329e06ff54085b1576106fbd30, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3e4dad9376a9c614ab3a86680310acc3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8710a71659878254aa90677db18a845d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: f1b54ad67b481634b80aa35f14eeb5f7, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: a49b2f79d5d2e3c45898e36a3af2035a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 01213a3ac4b7d3942957e509f8861eb2, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7924cc0d773d9204582a554d61732dbc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: c266babdd9b0b71489ffaf164c63fac5, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 6aa669be87bb762448304f71ab94912b, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3932e10263729304f8c073612eca3f87, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 128
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+- Class: 222
+  Script: {instanceID: 0}
+- Class: 224
+  Script: {instanceID: 0}
+- Class: 225
+  Script: {instanceID: 0}
+Assets:
+- Assets/Resources_Bundle/UI/UI_TestWindow.prefab
+- Assets/Resources_Bundle/UI/UI_SystemOpinion.prefab
+- Assets/Resources_Bundle/UI/UI_DragBar.prefab
+- Assets/Resources_Bundle/UI/UI_HintHistoryWindow.prefab
+- Assets/Resources_Bundle/UI/UI_Tips.prefab
+- Assets/Resources_Bundle/UI/UI_SenceLoading.prefab
+- Assets/Resources_Bundle/UI/UI_Minimize.prefab
+- Assets/Resources_Bundle/UI/Alert.prefab
+- Assets/Resources_Bundle/UI/UI_HintTips.prefab
+Dependencies: []

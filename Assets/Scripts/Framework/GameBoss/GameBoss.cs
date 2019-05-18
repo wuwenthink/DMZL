@@ -25,6 +25,7 @@ namespace Common
         }
 
         private void Awake ()
+
         {
             DontDestroyOnLoad(this);
             if ( g == null )

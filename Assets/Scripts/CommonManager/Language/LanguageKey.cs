@@ -10,6 +10,9 @@
 
         //语言测试表
         public const string WordTable_Test = "WordTable_Test";
-
+        public const string Word_UI = "Word_UI";
+        public const string Word_Story = "Word_Story";
+        public const string Word_Encyclopedia = "Word_Encyclopedia";
+        public const string Word_Content = "Word_Content";
     }
 }

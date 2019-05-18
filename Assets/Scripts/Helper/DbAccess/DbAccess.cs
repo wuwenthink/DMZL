@@ -15,7 +15,7 @@ namespace Common
         /// <summary>
         /// 声明一个连接对象
         /// </summary>
-        public static SqliteConnection dbConnection;
+        public SqliteConnection dbConnection;
 
         /// <summary>
         /// 声明一个操作数据库命令

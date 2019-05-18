@@ -12,15 +12,17 @@ namespace Common
         /// Update事件
         /// </summary>
         Action updateAction;
+
         /// <summary>
         /// 系统Update事件
         /// </summary>
         Action systemUpdateAction;
 
         /// <summary>
-        /// Update开关
+        /// Update是否打开
         /// </summary>
-        public bool UpdateIO;
+        private bool updateIO;
+        public bool UpdateIO { get => updateIO; }
 
         /// <summary>
         /// 事件流逝速度
@@ -32,19 +34,21 @@ namespace Common
         /// </summary>
         public static float DeltaTime;
 
+     
+
         /// <summary>
         /// 开始Update
         /// </summary>
         public void StartUpdate ()
         {
-            UpdateIO = true;
+            updateIO = true;
         }
         /// <summary>
         /// 暂停Update
         /// </summary>
         public void PauseUpdate ()
         {
-            UpdateIO = false;
+            updateIO = false;
         }
 
         protected override void Initialize ()
@@ -52,7 +56,7 @@ namespace Common
             //初始事件流失速度为1
             TimeRate = 1;
             //Update开关附初值
-            UpdateIO = true;
+            updateIO = true;
         }
 
 
@@ -63,7 +67,7 @@ namespace Common
         /// </summary>
         /// <param name="updateAction"></param>
         /// <returns>Update编号</returns>
-        public void OnUptate ( Action updateAction )
+        public void OnUpdate ( Action updateAction )
         {
             //向集合中添加Update事件
             this.updateAction += updateAction;
@@ -95,7 +99,7 @@ namespace Common
         /// </summary>
         /// <param name="updateAction"></param>
         /// <returns>Update编号</returns>
-        public void OnSystemUptate ( Action updateAction )
+        public void OnSystemUpdate ( Action updateAction )
         {
             //向集合中添加Update事件
             systemUpdateAction += updateAction;
@@ -125,18 +129,19 @@ namespace Common
         // Update is called once per frame
         private void Update ()
         {
-            //获取间隔时间
-            DeltaTime = Time.deltaTime * TimeRate;
-
+         
             //系统Update事件执行
             systemUpdateAction?.Invoke();
 
             //游戏Update事件执行
             if ( UpdateIO )
             {
-                    updateAction?.Invoke();
+                updateAction?.Invoke();
+                //获取间隔时间
+                DeltaTime = Time.deltaTime * TimeRate;
             }
-           
+            else DeltaTime = 0;
+
         }
     }
 }

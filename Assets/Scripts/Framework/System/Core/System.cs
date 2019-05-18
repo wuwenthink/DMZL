@@ -41,9 +41,10 @@
         protected System ()
         {
             model = new Model();
+            SystemBoss.I.RegisterModel(model);
         }
 
-        #region 导航层与模型层操作方法
+        #region 模型层操作方法
 
         /// <summary>
         /// 注册功能代理者
@@ -83,7 +84,7 @@
         {
             model.SendMessage(letter,data);
             //向监听器发送消息
-            Monitor.I.SendMessage(letter,data);
+            SystemBoss.I.SendMonitorMessage(letter,data);
         }
 
      
@@ -93,6 +94,7 @@
         /// </summary>
         public virtual void Close ()
         {
+            SystemBoss.I.RemoveModel(model);
             model = null;
             instance = null;
         }

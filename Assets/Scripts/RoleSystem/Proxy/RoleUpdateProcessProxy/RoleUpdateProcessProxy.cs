@@ -27,7 +27,7 @@ namespace RoleSpace
         public override void Initialize ()
         {
             rolesList = new List<Role>();
-            UpdateManager.I.OnUptate(UpdateFunction);
+            UpdateManager.I.OnUpdate(UpdateFunction);
         }
 
         public override void HandleMessage ( string letter,params object[] data )
@@ -43,7 +43,7 @@ namespace RoleSpace
             }
         }
 
-        void UpdateFunction ()
+        public override void UpdateFunction ()
         {
             //获取角色数量
             int rolesCount = rolesList.Count;
